@@ -38,9 +38,9 @@ class Kernel
         $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__), $isDevMode, null, null, false);
 
         $conn = array(
-            "url" =>"postgres://postgres:example@localhost:25432/db",
-            //'driver' => 'pdo_sqlite',
-            //'path' => __DIR__ . '/../db.sqlite',
+            //"url" =>"postgres://postgres:example@localhost:25432/db",
+            'driver' => 'pdo_sqlite',
+            'path' => __DIR__ . '/../db.sqlite',
         );
 
         // obtaining the entity manager

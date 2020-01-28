@@ -16,17 +16,17 @@
     <tbody>
     <?php foreach ($players as $player): ?>
         <tr>
-            <td><?= $player["id"]; ?></td>
-            <td> <?= $player["username"]; ?></td>
-            <td> <?= $player["email"]; ?></td>
+            <td><?= $player->getId(); ?></td>
+            <td> <?= $player->getUsername(); ?></td>
+            <td> <?= $player->getEmail(); ?></td>
             <td>
-                <a href="/player/show?id=<?= $player["id"]; ?>">
+                <a href="/player/show?id=<?= $player->getId(); ?>">
                     <i class="fas fa-eye"></i>
                 </a>
-                <a href="/player/edit?id=<?= $player["id"]; ?>">
+                <a href="/player/edit?id=<?= $player->getId(); ?>">
                     <i class="fas fa-edit"></i>
                 </a>
-                <a href="/player/delete?id=<?= $player["id"]; ?>"
+                <a href="/player/delete?id=<?= $player->getId(); ?>"
                    onclick="return confirm('Are you sure you want to delete it?')">
                     <i class="fas fa-trash"></i>
                 </a>

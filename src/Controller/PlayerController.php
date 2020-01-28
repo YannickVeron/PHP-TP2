@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Entity\Game;
+use App\Entity\Player;
 use App\FakeData;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,67 +14,69 @@ class PlayerController extends AbstractController
 {
 
 
-    public function index(Request $request): Response
+    public function index(Request $request,EntityManagerInterface $entityManager): Response
     {
-        /**
-         * @todo lister les joueurs
-         */
-        $players = FakeData::players(25);
+        $playerRepo = $entityManager->getRepository(Player::class);
+        $players = $playerRepo->findAll();
         return $this->render("player/index", ["players" => $players]);
 
     }
 
-    public function add(Request $request): Response
+    public function add(Request $request,EntityManagerInterface $entityManager): Response
     {
-        $player = FakeData::players(1)[0];
-
         if ($request->getMethod() == Request::METHOD_POST) {
-            /**
-             * @todo enregistrer l'objet
-             */
+            $player = (new Player)
+                ->setUsername($request->request->get("username"))
+                ->setEmail($request->request->get("email"));
+            $entityManager->persist($player);
+            $entityManager->flush();
+            return $this->redirectTo("/player");
+        }
+        return $this->render("player/form",['player'=>new Player()]);
+    }
+
+
+    public function show($id,EntityManagerInterface $entityManager): Response
+    {
+        $playerRepo=$entityManager->getRepository(Player::class);
+        $gameRepo=$entityManager->getRepository(Game::class);
+        $player=$playerRepo->find($id);
+        return $this->render("player/show", ["player" => $player, "availableGames" => $gameRepo->findAll()]);
+    }
+
+
+    public function edit($id, Request $request,EntityManagerInterface $entityManager): Response
+    {
+        $playerRepo=$entityManager->getRepository(Player::class);
+        $player=$playerRepo->find($id);
+        if ($request->getMethod() == Request::METHOD_POST) {
+            $player->setUsername($request->get("username"))
+                    ->setEmail($request->get("email"));
+            $entityManager->flush();
             return $this->redirectTo("/player");
         }
         return $this->render("player/form", ["player" => $player]);
     }
 
-
-    public function show($id): Response
+    public function delete($id, EntityManagerInterface $entityManager): Response
     {
-        $player = FakeData::players(1)[0];
-        return $this->render("player/show", ["player" => $player, "availableGames" => FakeData::games()]);
-    }
-
-
-    public function edit($id, Request $request): Response
-    {
-        $player = FakeData::players(1)[0];
-
-        if ($request->getMethod() == Request::METHOD_POST) {
-            /**
-             * @todo enregistrer l'objet
-             */
-            return $this->redirectTo("/player");
-        }
-        return $this->render("player/form", ["player" => $player]);
-
+        $playerRepo = $entityManager->getRepository(Player::class);
+        $player=$playerRepo->find($id);
+        $entityManager->remove($player);
+        $entityManager->flush();
+        return $this->redirectTo("/player");
 
     }
 
-    public function delete($id): Response
-    {
-        /**
-         * @todo supprimer l'objet
-         */
-        return $this->redirectTo("/game");
-
-    }
-
-    public function addgame($id, Request $request): Response
+    public function addgame($id, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->getMethod() == Request::METHOD_POST) {
-            /**
-             * @todo enregistrer l'objet
-             */
+            $playerRepo = $entityManager->getRepository(Player::class);
+            $gameRepo = $entityManager->getRepository(Game::class);
+            $player=$playerRepo->find($id);
+            $game = $gameRepo->find($request->request->get("game_id"));
+            $player->addGame($game);
+            $entityManager->flush();
             return $this->redirectTo("/player");
         }
     }

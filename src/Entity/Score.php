@@ -1,61 +1,111 @@
 <?php
 
 namespace App\Entity;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @Doctrine\ORM\Mapping\Entity()
+ * @ORM\Table(name="score")
+ */
 class Score
 {
     /**
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-    /**
      * @ORM\Column(type="integer")
      */
     protected $score;
     /**
-     * @return mixed
+     * @var DateTime
+     * @ORM\Column(type="datetime")
      */
-    public function getScore()
+    protected $created_at;
+
+    /**
+     * @var Player
+     * @ORM\ManyToOne(targetEntity="Player", inversedBy="scores")
+     */
+    private $owner;
+    public function getOwner(): Player{
+        return $this->owner;
+    }
+    public function setOwner(Player $owner):self{
+        $this->owner=$owner;
+        return $this;
+    }
+
+    /**
+     * @var Game
+     * @ORM\ManyToOne(targetEntity="Game", inversedBy="scores")
+     */
+    private $game;
+    public function getGame(): Game{
+        return $this->game;
+    }
+    public function setGame(Game $game):self {
+        $this->game=$game;
+        return $this;
+    }
+
+    /**
+     * Score constructor.
+     * @param $score
+     * @param $created_at
+     */
+    public function __construct(int $score,DateTime $created_at)
+    {
+        $this->score = $score;
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScore() : int
     {
         return $this->score;
     }
 
     /**
-     * @param mixed $score
+     * @param int $score
      */
-    public function setScore($score): void
+    public function setScore(int $score): self
     {
         $this->score = $score;
+        return $this;
     }
+
     /**
-     * @ORM\Column(type="datetime")
+     * @return DateTime
      */
-    protected $created_at;
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt() : Datetime
     {
         return $this->created_at;
     }
 
     /**
-     * @param mixed $created_at
+     * @param DateTime $created_at
      */
-    public function setCreatedAt($created_at): void
+    public function setCreatedAt(Datetime $created_at): self
     {
         $this->created_at = $created_at;
+        return $this;
     }
+
+
 
 
 }
