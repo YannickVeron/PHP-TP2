@@ -3,7 +3,7 @@
     <h1>Last Scores</h1>
     <div class="row">
         <div class="col">
-            <form class="form-inline" action="/score/add" method="post">
+            <form class="form-inline" action="{{path("score_add")}}" method="post">
                 <label class="sr-only" for="game">Game</label>
                 <select class="custom-select mr-sm-3" id="game" name="game" required>
                     <option disabled selected>game</option>
@@ -44,11 +44,10 @@
                 <td>{{score.getGame().getName()}}</td>
                 <td>{{score.getScore()}}</td>
                 <td>
-                    <a href="/score/delete?id={{score.getId()}}"
+                    <a href="{{path("score_delete",{id:score.id})}}"
                        onclick="return confirm('Are you sure you want to delete it?')">
                         <i class="fas fa-trash"></i>
                     </a>
-
                 </td>
             </tr>
             {% endfor %}

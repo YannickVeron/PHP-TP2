@@ -6,7 +6,7 @@
         </h1>
     </div>
     <div class="row">
-        <form class="form-inline" method="post" action="/player/addgame?id={{ player.getId()}}">
+        <form class="form-inline" method="post" action="{{path("player_addgame",{id: player.id})}}">
             <label class="sr-only" for="game">Game</label>
             <select class="custom-select mr-sm-3" id="game" name="game_id" required>
                 <option disabled selected>game</option>
@@ -21,7 +21,7 @@
     <div class="row">
         {%for game in player.getGames() %}
         <div class="col-3" style="margin-bottom: 16px;">
-            <a href="/game/show?id={{game.getId()}}"><img class="img-responsive" src="{{game.getImage()}}"/></a>
+            <a href="{{path("game_show",{id: game.id})}}"><img class="img-responsive" src="{{game.getImage()}}"/></a>
         </div>
         {% endfor %}
     </div>

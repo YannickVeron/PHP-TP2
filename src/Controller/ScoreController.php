@@ -11,10 +11,14 @@ use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 class ScoreController extends AbstractController
 {
+    /**
+     * @Route("/score",name="score_index")*
+     */
     public function index(Request $request,EntityManagerInterface $entityManager): Response
     {
         $scoreRepo=$entityManager->getRepository(Score::class);
@@ -27,6 +31,9 @@ class ScoreController extends AbstractController
         return $this->render("score/index.html.twig", ["scores" => $scores,"games"=>$games,"players"=>$players]);
     }
 
+    /**
+     * @Route("/score/add",name="score_add")*
+     */
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     {
         if ($request->getMethod() == Request::METHOD_POST) {
@@ -44,6 +51,9 @@ class ScoreController extends AbstractController
         return $this->redirectTo("/score");
     }
 
+    /**
+     * @Route("/score/{id}/delete",name="score_delete")*
+     */
     public function delete($id,EntityManagerInterface $entityManager): Response
     {
         $scoreRepo = $entityManager->getRepository(Score::class);
