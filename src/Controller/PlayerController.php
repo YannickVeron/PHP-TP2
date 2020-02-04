@@ -12,14 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PlayerController extends AbstractController
 {
-
-
     public function index(Request $request,EntityManagerInterface $entityManager): Response
     {
         $playerRepo = $entityManager->getRepository(Player::class);
         $players = $playerRepo->findAll();
-        return $this->render("player/index", ["players" => $players]);
-
+        return $this->render("player/index.html.twig", ["players" => $players]);
     }
 
     public function add(Request $request,EntityManagerInterface $entityManager): Response
@@ -32,18 +29,16 @@ class PlayerController extends AbstractController
             $entityManager->flush();
             return $this->redirectTo("/player");
         }
-        return $this->render("player/form",['player'=>new Player()]);
+        return $this->render("player/form.html.twig",['player'=>new Player()]);
     }
-
 
     public function show($id,EntityManagerInterface $entityManager): Response
     {
         $playerRepo=$entityManager->getRepository(Player::class);
         $gameRepo=$entityManager->getRepository(Game::class);
         $player=$playerRepo->find($id);
-        return $this->render("player/show", ["player" => $player, "availableGames" => $gameRepo->findAll()]);
+        return $this->render("player/show.html.twig", ["player" => $player, "availableGames" => $gameRepo->findAll()]);
     }
-
 
     public function edit($id, Request $request,EntityManagerInterface $entityManager): Response
     {
@@ -55,7 +50,7 @@ class PlayerController extends AbstractController
             $entityManager->flush();
             return $this->redirectTo("/player");
         }
-        return $this->render("player/form", ["player" => $player]);
+        return $this->render("player/form.html.twig", ["player" => $player]);
     }
 
     public function delete($id, EntityManagerInterface $entityManager): Response
@@ -80,5 +75,4 @@ class PlayerController extends AbstractController
             return $this->redirectTo("/player");
         }
     }
-
 }

@@ -24,7 +24,7 @@ class ScoreController extends AbstractController
         $games=$gameRepo->findAll();
         $players=$playerRepo->findAll();
 
-        return $this->render("score/index", ["scores" => $scores,"games"=>$games,"players"=>$players]);
+        return $this->render("score/index.html.twig", ["scores" => $scores,"games"=>$games,"players"=>$players]);
     }
 
     public function add(Request $request,EntityManagerInterface $entityManager): Response

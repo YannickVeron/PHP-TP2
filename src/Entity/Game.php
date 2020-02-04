@@ -37,17 +37,6 @@ class Game
      */
     private $scores;
 
-    /**
-     * Game constructor.
-     * @param $name
-     * @param $image
-     */
-    public function __construct(String $name,String $image)
-    {
-        $this->name = $name;
-        $this->image = $image;
-    }
-
     public function addScore(Score $score):self{
         $this->scores[] = $score;
         return $this;
